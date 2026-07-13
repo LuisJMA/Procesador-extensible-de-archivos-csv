@@ -1,33 +1,23 @@
 import com.csvlib.core.DataTable;
 import com.csvlib.io.CSVLoader;
-import com.csvlib.processor.ICSVProcessor;
+import com.csvlib.processor.UppercaseProcessor; // Importa tu procesador
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            // 1. Cargar el archivo
             DataTable tabla = CSVLoader.load("datos.csv");
-            System.out.println("Archivo cargado exitosamente.");
-
-            // 2. Uso básico: Imprimir
+            System.out.println("Archivo cargado:");
             tabla.printTable();
 
-            // 3. EXPANSIÓN: Creamos una funcionalidad nueva SIN TOCAR la librería
-            // Definimos un procesador que pone una columna en mayúsculas (ejemplo)
-            ICSVProcessor procesadorMayusculas = new ICSVProcessor() {
-                @Override
-                public void execute(DataTable table) {
-                    System.out.println("\n--- Ejecutando procesador personalizado ---");
-                    // Aquí el usuario pone su lógica propia
-                }
-            };
+            // Usamos la clase que ya creaste en UppercaseProcessor.java
+            System.out.println("\n--- Ejecutando procesador de mayúsculas ---");
+            tabla.apply(new UppercaseProcessor());
 
-            // Aplicamos la extensión
-            tabla.apply(procesadorMayusculas);
+            tabla.printTable();
 
         } catch (IOException e) {
-            System.err.println("Error al cargar el archivo: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
     }
 }
